@@ -15,8 +15,6 @@ def user_create(request):
         if user_form.is_valid() and company_form.is_valid():
             user = user_form.save()
             company = company_form.save()
-            user_details = models.UserDetails(user=user, company=company)
-            user_details.save()
 
             return redirect('home')
 
