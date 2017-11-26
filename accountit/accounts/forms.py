@@ -14,9 +14,21 @@ class CompanyRegistrationForm(forms.ModelForm):
         self.fields['name'].label = 'Company name'
 
 
-class UserCreateForm(UserCreationForm):
+class UserRegistrationForm(UserCreationForm):
     class Meta:
         fields = ('username', 'email', 'password1', 'password2')
+        model = get_user_model()
+
+    # Setup a label
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['username'].label = 'Display Name'
+        self.fields['email'].label = 'Email Address'
+
+
+class UserCreateForm(UserCreationForm):
+    class Meta:
+        fields = ('username', 'name', 'email', 'password1', 'password2')
         model = get_user_model()
 
     # Setup a label

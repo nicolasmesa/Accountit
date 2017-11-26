@@ -9,5 +9,8 @@
         {% bootstrap_form company_form %}
         {% bootstrap_form user_form %}
         <input type="submit" class="btn btn-primary" value="Sign up" />
+        <span>
+            Already have an account? <a href="{% url 'accounts:login' %}">Login</a>
+        </span>
     </form>
 {% endblock %}

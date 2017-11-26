@@ -14,7 +14,8 @@ class Company(models.Model):
 
 
 class User(AbstractUser):
-    company = models.ForeignKey(Company, related_name='users', editable=False, null=True, blank=True)
+    # editable=False means that the field won't show up in the Admin page. See https://docs.djangoproject.com/en/1.11/ref/models/fields/#editable
+    company = models.ForeignKey(Company, editable=False, null=True, blank=True, on_delete=models.PROTECT)
     name = models.CharField(blank=True, max_length=256)
 
     def __str__(self):

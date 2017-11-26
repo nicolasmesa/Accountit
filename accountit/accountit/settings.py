@@ -127,3 +127,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [STATIC_DIR]
 
 AUTH_USER_MODEL = 'accounts.User'
+
+LOGIN_REDIRECT_URL = 'home'
+LOGOUT_REDIRECT_URL = 'accounts:login'

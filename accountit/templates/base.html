@@ -11,9 +11,14 @@
         <nav class="navbar my-nav" role="navigation" id="navbar">
             <div class="container">
                 <a href="{% url 'home' %}" class="navbar-brand">Accountit</a>
-
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">Something</a></li>
+                    {% if user.is_authenticated %}
+                        <li><a href="{% url 'accounts:create' %}">Create</a></li>
+                        <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
+                    {% else %}
+                        <li><a href="{% url 'accounts:login' %}">Logout</a></li>
+                        <li><a href="{% url 'accounts:signup' %}">Signup</a></li>
+                    {% endif %}
                 </ul>
             </div>
         </nav>

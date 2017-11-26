@@ -2,4 +2,13 @@
 
 {% block content %}
     <h1>Welcome to Accountit</h1>
+    <h2>{{ user.company.name }} Dashboard</h2>
+    <div>
+        <h3>Users</h3>
+        <ul>
+            {% for user in user.company.user_set.all %}
+            <li><a href="#">{{ user.email }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
 {% endblock %}
