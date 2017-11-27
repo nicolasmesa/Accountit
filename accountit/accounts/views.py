@@ -18,6 +18,9 @@ def user_register(request):
 
         if user_form.is_valid() and company_form.is_valid():
             user = user_form.save(commit=False)
+
+            # User who creates the account is admin
+            user.is_admin = True
             company = company_form.save()
             user.company = company
             user.save()

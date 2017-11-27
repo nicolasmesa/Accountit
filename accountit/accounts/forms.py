@@ -28,7 +28,7 @@ class UserRegistrationForm(UserCreationForm):
 
 class UserCreateForm(UserCreationForm):
     class Meta:
-        fields = ('username', 'name', 'email', 'password1', 'password2')
+        fields = ('username', 'name', 'email', 'password1', 'password2', 'is_admin')
         model = get_user_model()
 
     # Setup a label
