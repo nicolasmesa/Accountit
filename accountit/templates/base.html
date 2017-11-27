@@ -13,6 +13,7 @@
                 <a href="{% url 'home' %}" class="navbar-brand">Accountit</a>
                 <ul class="nav navbar-nav navbar-right">
                     {% if user.is_authenticated %}
+                        <li><a href="{% url 'items:list' %}">Items</a></li>
                         <li><a href="{% url 'contacts:list' %}">Contacts</a></li>
                         <li><a href="{% url 'accounts:create' %}">Create User</a></li>
                         <li><a href="{% url 'accounts:logout' %}">Logout</a></li>

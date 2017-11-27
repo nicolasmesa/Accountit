@@ -2,25 +2,25 @@ from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
-from .models import Contact
-from .forms import ContactCreateForm
+from .models import Item
+from .forms import ItemCreateForm
 
 
-class ContactCreateView(LoginRequiredMixin, CreateView):
-    model = Contact
-    form_class = ContactCreateForm
+class ItemCreateView(LoginRequiredMixin, CreateView):
+    model = Item
+    form_class = ItemCreateForm
 
     def form_valid(self, form):
-        contact = form.save(commit=False)
-        contact.company = self.request.user.company
-        contact.save()
-        self.object = contact
+        item = form.save(commit=False)
+        item.company = self.request.user.company
+        item.save()
+        self.object = item
         return super().form_valid(form)
 
 
-class ContactUpdateView(LoginRequiredMixin, UpdateView):
-    model = Contact
-    form_class = ContactCreateForm
+class ItemUpdateView(LoginRequiredMixin, UpdateView):
+    model = Item
+    form_class = ItemCreateForm
 
     def get_queryset(self):
         company = self.request.user.company
@@ -28,8 +28,8 @@ class ContactUpdateView(LoginRequiredMixin, UpdateView):
         return query_set.filter(company=company)
 
 
-class ContactDetailView(LoginRequiredMixin, DetailView):
-    model = Contact
+class ItemDetailView(LoginRequiredMixin, DetailView):
+    model = Item
 
     def get_queryset(self):
         company = self.request.user.company
@@ -37,8 +37,8 @@ class ContactDetailView(LoginRequiredMixin, DetailView):
         return query_set.filter(company=company)
 
 
-class ContactListView(LoginRequiredMixin, ListView):
-    model = Contact
+class ItemListView(LoginRequiredMixin, ListView):
+    model = Item
 
     def get_queryset(self):
         company = self.request.user.company
@@ -46,9 +46,9 @@ class ContactListView(LoginRequiredMixin, ListView):
         return query_set.filter(company=company)
 
 
-class ContactDeleteView(LoginRequiredMixin, DeleteView):
-    model = Contact
-    success_url = reverse_lazy('contacts:list')
+class ItemDeleteView(LoginRequiredMixin, DeleteView):
+    model = Item
+    success_url = reverse_lazy('items:list')
 
     def get_queryset(self):
         company = self.request.user.company

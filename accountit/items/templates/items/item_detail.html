@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %} Item: {{ item.name }} {% endblock %}
+
+{% block content %}
+    <h1>{{ item.name }}</h1>
+
+    <a href="{% url 'items:update' pk=item.pk %}" class="btn btn-default">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span>Edit</span>
+    </a>
+    <table class="table">
+        <thead>
+            <th>Property</th>
+            <th>Value</th>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ item.name }}</td>
+            </tr>
+            <tr>
+                <th>Price</th>
+                <td>${{ item.price }}</td>
+            </tr>
+            <tr>
+                <th>Tax</th>
+                <td>{{ item.tax }}%</td>
+            </tr>
+            <tr>
+                <th>Observations</th>
+                <td>{{ item.observations }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+

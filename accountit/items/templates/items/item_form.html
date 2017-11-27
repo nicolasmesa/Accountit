@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    {% if object %}
+        Update item
+    {% else %}
+        Create item
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <h1>Create item</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form form %}
+
+        {% if object %}
+            <input type="submit" class="btn btn-primary" value="Update item" />
+        {% else %}
+            <input type="submit" class="btn btn-primary" value="Create item" />
+        {% endif %}
+    </form>
+{% endblock %}
