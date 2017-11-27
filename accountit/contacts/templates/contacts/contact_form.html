@@ -10,15 +10,15 @@
 {% endblock %}
 
 {% block content %}
-    <h1>Create user</h1>
+    <h1>Create contact</h1>
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
 
         {% if object %}
-            <input type="submit" class="btn btn-primary" value="Update user" />
+            <input type="submit" class="btn btn-primary" value="Update contact" />
         {% else %}
-            <input type="submit" class="btn btn-primary" value="Create user" />
+            <input type="submit" class="btn btn-primary" value="Create contact" />
         {% endif %}
     </form>
 {% endblock %}
