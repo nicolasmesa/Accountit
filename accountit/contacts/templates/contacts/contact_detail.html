@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %} Contact: {{ contact.name }} {% endblock %}
+
+{% block content %}
+    <h1>{{ contact.name }}</h1>
+
+    <a href="{% url 'contacts:update' pk=contact.pk %}" class="btn btn-default">
+        <span class="glyphicon glyphicon-pencil"></span>
+        <span>Edit</span>
+    </a>
+    <table class="table">
+        <thead>
+            <th>Property</th>
+            <th>Value</th>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td>{{ contact.name }}</td>
+            </tr>
+            <tr>
+                <th>Identification</th>
+                <td>{{ contact.identification }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ contact.phone }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ contact.address }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ contact.email }}</td>
+            </tr>
+        </tbody>
+    </table>
+{% endblock %}
+

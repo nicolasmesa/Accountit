@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'bootstrap3',
     'home',
     'accounts',
+    'contacts',
 ]
 
 MIDDLEWARE = [

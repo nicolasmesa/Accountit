@@ -20,5 +20,6 @@ from home.views import HomeView
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('accounts.urls'))
+    url(r'^accounts/', include('accounts.urls')),
+    url(r'^contacts/', include('contacts.urls', namespace='contacts')),
 ]

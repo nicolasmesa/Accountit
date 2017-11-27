@@ -1,13 +1,20 @@
 {% extends 'base.html' %}
 {% load bootstrap3 %}
 
-{% block title %} Create user {% endblock %}
+{% block title %}
+    {% if object %}
+        Update contact
+    {% else %}
+        Create contact
+    {% endif %}
+{% endblock %}
 
 {% block content %}
     <h1>Create user</h1>
     <form method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
+
         {% if object %}
             <input type="submit" class="btn btn-primary" value="Update user" />
         {% else %}
