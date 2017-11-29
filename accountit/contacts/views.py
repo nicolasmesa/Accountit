@@ -4,9 +4,10 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from .models import Contact
 from .forms import ContactCreateForm
+from security.mixins import CompanySafeViewMixin
 
 
-class ContactCreateView(LoginRequiredMixin, CreateView):
+class ContactCreateView(LoginRequiredMixin, CompanySafeViewMixin, CreateView):
     model = Contact
     form_class = ContactCreateForm
 
@@ -18,39 +19,19 @@ class ContactCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ContactUpdateView(LoginRequiredMixin, UpdateView):
+class ContactUpdateView(LoginRequiredMixin, CompanySafeViewMixin, UpdateView):
     model = Contact
     form_class = ContactCreateForm
 
-    def get_queryset(self):
-        company = self.request.user.company
-        query_set = super().get_queryset()
-        return query_set.filter(company=company)
 
-
-class ContactDetailView(LoginRequiredMixin, DetailView):
+class ContactDetailView(LoginRequiredMixin, CompanySafeViewMixin, DetailView):
     model = Contact
 
-    def get_queryset(self):
-        company = self.request.user.company
-        query_set = super().get_queryset()
-        return query_set.filter(company=company)
 
-
-class ContactListView(LoginRequiredMixin, ListView):
+class ContactListView(LoginRequiredMixin, CompanySafeViewMixin, ListView):
     model = Contact
 
-    def get_queryset(self):
-        company = self.request.user.company
-        query_set = super().get_queryset()
-        return query_set.filter(company=company)
 
-
-class ContactDeleteView(LoginRequiredMixin, DeleteView):
+class ContactDeleteView(LoginRequiredMixin, CompanySafeViewMixin, DeleteView):
     model = Contact
     success_url = reverse_lazy('contacts:list')
-
-    def get_queryset(self):
-        company = self.request.user.company
-        query_set = super().get_queryset()
-        return query_set.filter(company=company)

@@ -1,0 +1,71 @@
+{% extends 'base.html' %}
+
+{% block title %} Invoice: {{ invoice.code }} {% endblock %}
+
+{% block content %}
+    <h1>Invoice {{ invoice.code }}</h1>
+
+    <table class="table">
+        <thead>
+            <th>Property</th>
+            <th>Value</th>
+        </thead>
+        <tbody>
+            <tr>
+                <th>Name</th>
+                <td><a href="{% url 'contacts:detail' pk=invoice.contact.pk %}">{{ invoice.contact.name }}</a></td>
+            </tr>
+            <tr>
+                <th>Identification</th>
+                <td>{{ invoice.contact.identification }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ invoice.contact.phone }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ invoice.contact.address }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ invoice.contact.email }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ invoice.creation_date }}</td>
+            </tr>
+            <tr>
+                <th>Expiration Date</th>
+                <td>{{ invoice.expiration_date }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>${{ invoice.get_total }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Items</h2>
+    <table class="table">
+        <thead>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Tax</th>
+            <th>Total</th>
+        </thead>
+        <tbody>
+            {% for item in invoice.itemsold_set.all %}
+                <tr>
+                    <td>{{ item.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>{{ item.price }}</td>
+                    <td>{{ item.tax }}%</td>
+                    <td>${{ item.get_total }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

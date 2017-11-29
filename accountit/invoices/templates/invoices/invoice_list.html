@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block title %} Invoices {% endblock %}
+
+{% block content %}
+    <h1>Invoices</h1>
+    <a href="{% url 'invoices:create' %}" class="btn btn-default">
+        <span class="glyphicon glyphicon-plus"></span>
+        <span class="">Create new invoice</span>
+    </a>
+    <table class="table">
+        <thead>
+            <th>Code</th>
+            <th>Name</th>
+            <th>Date</th>
+            <th>Due Date</th>
+            <th>Total</th>
+            <th>Actions</th>
+        </thead>
+        <tbody>
+            {% for invoice in invoice_list %}
+                <tr>
+                    <td>{{ invoice.code }}</td>
+                    <td>{{ invoice.contact.name }}</td>
+                    <td>{{ invoice.creation_date }}</td>
+                    <td>{{ invoice.expiration_date }}</td>
+                    <td>${{ invoice.get_total }}</td>
+                    <td>
+                        <a href="{% url 'invoices:detail' pk=invoice.pk %}" class="glyphicon glyphicon-eye-open"></a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+
+<tr>
+                <th>Identification</th>
+                <td>{{ invoice.contact.identification }}</td>
+            </tr>
+            <tr>
+                <th>Phone</th>
+                <td>{{ invoice.contact.phone }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ invoice.contact.address }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ invoice.contact.email }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{{ invoice.creation_date }}</td>
+            </tr>
+            <tr>
+                <th>Expiration Date</th>
+                <td>{{ invoice.expiration_date }}</td>
+            </tr>
+            <tr>
+                <th>Total</th>
+                <td>${{ invoice.get_total }}</td>
+            </tr>

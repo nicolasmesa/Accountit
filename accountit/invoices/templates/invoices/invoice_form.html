@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+{% load bootstrap3 %}
+
+{% block title %}
+    Create Invoice
+{% endblock %}
+
+{% block content %}
+    <h1>Create Invoice</h1>
+    <form method="post">
+        {% csrf_token %}
+        {% bootstrap_form invoice_form %}
+
+        <div class="items-sold-container">
+            {% for form in item_sold_form_set %}
+            <div class="items-sold-form">
+                {% bootstrap_form form %}
+            </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            <div class="col-md-8"></div>
+            <div class="col-md-4">
+                <a id="add-another-form" class="btn btn-action">
+                    Add another item
+                </a>
+            </div>
+        </div>
+
+        {{ item_sold_form_set.management_form }}
+
+        <input type="submit" class="btn btn-primary" value="Create Invoice" />
+    </form>
+{% endblock %}
+
+{% block extra_scripts %}
+    <script type="text/javascript">
+        (function() {
+            var container = $('.items-sold-container');
+            var totalFormsField = $('#id_form-TOTAL_FORMS');
+
+            var original = $('.items-sold-form').eq(0).clone();
+            var count = $('.items-sold-form').length - 1;
+
+
+            function setIdAndName(field) {
+                var label = field.closest('div').find('labe');
+                var name = field.attr('name').split('0').join('' + count)
+                var id = 'id_' + name;
+
+                label.attr('for', id);
+                field.attr('id', id);
+                field.attr('name', name);
+                field.val(null);
+            }
+
+
+            function add_form() {
+                count++;
+                var toAdd = original.clone();
+                var select = toAdd.find('select');
+                var numberfield = toAdd.find('input[type=number]');
+
+                setIdAndName(select);
+                setIdAndName(numberfield);
+
+                container.append(toAdd);
+                totalFormsField.val('' + (count + 1));
+            }
+
+            $('#add-another-form').click(add_form);
+
+        })();
+    </script>
+{% endblock %}

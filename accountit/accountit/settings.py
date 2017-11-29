@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'accounts',
     'contacts',
     'items',
+    'invoices',
 ]
 
 MIDDLEWARE = [
@@ -131,3 +132,5 @@ AUTH_USER_MODEL = 'accounts.User'
 
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'accounts:login'
+
+USE_THOUSAND_SEPARATOR = True
