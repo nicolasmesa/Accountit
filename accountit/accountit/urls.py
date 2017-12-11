@@ -30,7 +30,8 @@ urlpatterns = [
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^api/v1/accounts/', include('accounts.urls', namespace='accounts'))
+    url(r'^api/v1/accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^api/v1/contacts/', include('contacts.urls', namespace='contacts')),
 ]
 
 if settings.DEBUG:

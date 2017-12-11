@@ -16,7 +16,7 @@ User = get_user_model()
 
 
 class UsersList(generics.ListCreateAPIView):
-    permission_classes = (custom_permissions.IsAdminOrReadOnly, )
+    permission_classes = (permissions.IsAuthenticated, custom_permissions.IsAdminOrReadOnly, )
     serializer_class = serializers.UserSerializer
 
     def get_queryset(self):
@@ -32,22 +32,13 @@ class UserDetail(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
         custom_permissions.or_based([custom_permissions.IsOwnerOrReadOnly, custom_permissions.IsAdmin]),
+        custom_permissions.CannotDeleteSelf,
     )
     serializer_class = serializers.UserSerializer
 
     def get_queryset(self):
-        return User.objects.all().filter(pk=self.kwargs.get('pk'))
-
-    # TODO: User should only be allowed to modify himself if not admin
-
-    def get_object(self):
         company = self.request.user.company
-        queryset = self.get_queryset()
-        queryset = self.filter_queryset(queryset).filter(company=company)
-
-        obj = get_object_or_404(queryset)
-        self.check_object_permissions(self.request, obj)
-        return obj
+        return User.objects.all().filter(pk=self.kwargs.get('pk'), company=company)
 
 
 class CompanyDetail(generics.RetrieveUpdateAPIView):
@@ -75,6 +66,7 @@ class AccountCreate(APIView):
         user_serializer.save(company=company)
 
         return Response(company_serializer.data, status=status.HTTP_201_CREATED)
+
 
 # Non API
 def user_register(request):

@@ -74,3 +74,14 @@ class IsOwnerOrReadOnly(permissions.BasePermission):
 
         # Write permissions are only allowed to the owner of the snippet.
         return obj == request.user
+
+
+class CannotDeleteSelf(permissions.BasePermission):
+    """
+    Prevents users from deleting themselves
+    """
+
+    def has_object_permission(self, request, view, obj):
+        if request.method is not "DELETE":
+            return True
+        return request.user != obj
