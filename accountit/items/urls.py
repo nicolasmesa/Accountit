@@ -11,3 +11,9 @@ urlpatterns = [
     url(r'^detail/(?P<pk>\d+)$', views.ItemDetailView.as_view(), name='detail'),
     url(r'^delete/(?P<pk>\d+)$', views.ItemDeleteView.as_view(), name='delete'),
 ]
+
+
+urlpatterns = [
+    url(r'^$', views.ItemList.as_view(), name='list'),
+    url(r'^(?P<pk>\d+)/$', views.ItemDetail.as_view(), name='item-detail'),
+]

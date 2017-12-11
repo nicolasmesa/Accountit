@@ -2,8 +2,30 @@ from django.shortcuts import render
 from django.views.generic import CreateView, UpdateView, DeleteView, DetailView, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.urlresolvers import reverse_lazy
+from rest_framework import generics
 from .models import Item
 from .forms import ItemCreateForm
+from . import serializers
+
+
+class ItemList(generics.ListCreateAPIView):
+    serializer_class = serializers.ItemSerializer
+
+    def get_queryset(self):
+        company = self.request.user.company
+        return Item.objects.all().filter(company=company)
+
+    def perform_create(self, serializer):
+        company = self.request.user.company
+        serializer.save(company=company)
+
+
+class ItemDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.ItemSerializer
+
+    def get_queryset(self):
+        company = self.request.user.company
+        return Item.objects.all().filter(company=company, pk=self.kwargs.get('pk'))
 
 
 class ItemCreateView(LoginRequiredMixin, CreateView):
