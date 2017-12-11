@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url, include
 from django.contrib import admin
 from home.views import HomeView
+from django.conf import settings
 
 urlpatterns = [
     url(r'^$', HomeView.as_view(), name='home'),
@@ -24,4 +25,16 @@ urlpatterns = [
     url(r'^contacts/', include('contacts.urls', namespace='contacts')),
     url(r'^items/', include('items.urls', namespace='items')),
     url(r'^invoices/', include('invoices.urls', namespace='invoices')),
+
 ]
+
+urlpatterns = [
+    url(r'^admin/', admin.site.urls),
+    url(r'^api/v1/accounts/', include('accounts.urls', namespace='accounts'))
+]
+
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns = [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ] + urlpatterns

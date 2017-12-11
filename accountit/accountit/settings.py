@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'contacts',
     'items',
     'invoices',
+    'rest_framework',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -55,6 +57,9 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    ## Debug
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'accountit.urls'
@@ -134,3 +139,17 @@ LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'accounts:login'
 
 USE_THOUSAND_SEPARATOR = True
+
+
+
+REST_FRAMEWORK = {
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAdminUser',
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 2
+}
+
+
+# Debug
+INTERNAL_IPS = ['127.0.0.1']

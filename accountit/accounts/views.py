@@ -2,11 +2,81 @@ from django.shortcuts import render, redirect
 from django.views.generic import CreateView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
-from . import models
-from . import forms
 from django.core.urlresolvers import reverse
+from django.shortcuts import get_object_or_404
+from rest_framework import status, permissions, generics
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from . import forms
+from . import serializers
+from . import permissions as custom_permissions
 
 
+User = get_user_model()
+
+
+class UsersList(generics.ListCreateAPIView):
+    permission_classes = (custom_permissions.IsAdminOrReadOnly, )
+    serializer_class = serializers.UserSerializer
+
+    def get_queryset(self):
+        company = self.request.user.company
+        return User.objects.all().filter(company=company)
+
+    def perform_create(self, serializer):
+        company = self.request.user.company
+        serializer.save(company=company)
+
+
+class UserDetail(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+        custom_permissions.or_based([custom_permissions.IsOwnerOrReadOnly, custom_permissions.IsAdmin]),
+    )
+    serializer_class = serializers.UserSerializer
+
+    def get_queryset(self):
+        return User.objects.all().filter(pk=self.kwargs.get('pk'))
+
+    # TODO: User should only be allowed to modify himself if not admin
+
+    def get_object(self):
+        company = self.request.user.company
+        queryset = self.get_queryset()
+        queryset = self.filter_queryset(queryset).filter(company=company)
+
+        obj = get_object_or_404(queryset)
+        self.check_object_permissions(self.request, obj)
+        return obj
+
+
+class CompanyDetail(generics.RetrieveUpdateAPIView):
+    permission_classes = (
+        custom_permissions.IsAdminOrReadOnly,
+    )
+    serializer_class = serializers.CompanySerializer
+
+    def get_object(self):
+        return self.request.user.company
+
+
+
+class AccountCreate(APIView):
+    permission_classes = (permissions.AllowAny,)
+
+    def post(self, request, format=None):
+        company_serializer = serializers.CompanySerializer(data=request.data)
+        user_serializer = serializers.UserSerializer(data=request.data)
+
+        company_serializer.is_valid(raise_exception=True)
+        user_serializer.is_valid(raise_exception=True)
+
+        company = company_serializer.save()
+        user_serializer.save(company=company)
+
+        return Response(company_serializer.data, status=status.HTTP_201_CREATED)
+
+# Non API
 def user_register(request):
     user_form = forms.UserRegistrationForm()
     company_form = forms.CompanyRegistrationForm()
