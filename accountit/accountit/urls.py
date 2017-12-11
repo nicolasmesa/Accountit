@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^api/v1/accounts/', include('accounts.urls', namespace='accounts')),
     url(r'^api/v1/contacts/', include('contacts.urls', namespace='contacts')),
     url(r'^api/v1/items/', include('items.urls', namespace='items')),
+    url(r'^api/v1/invoices/', include('invoices.urls', namespace='invoices')),
 ]
 
 if settings.DEBUG:

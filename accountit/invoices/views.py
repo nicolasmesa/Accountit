@@ -5,11 +5,41 @@ from django.views.generic import CreateView, DetailView, ListView
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.decorators import login_required
+from rest_framework import generics
 from . import models
 from . import forms
+from . import serializers
 from django.core.urlresolvers import reverse
 from security.mixins import CompanySafeViewMixin
 from security.utils import company_safe_form, company_safe_form_set
+from .permissions import BlockPatch
+
+
+class InvoiceList(generics.ListCreateAPIView):
+    serializer_class = serializers.InvoiceSerializer
+
+    def get_queryset(self):
+        company = self.request.user.company
+        return models.Invoice.objects.all().filter(company=company)
+
+    def perform_create(self, serializer):
+        company = self.request.user.company
+        serializer.save(company=company)
+
+
+class InvoiceDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = serializers.InvoiceSerializer
+    permission_classes = (BlockPatch,)
+
+    def get_queryset(self):
+        company = self.request.user.company
+        return models.Invoice.objects.all().filter(pk=self.kwargs.get('pk'), company=company)
+
+    def perform_destroy(self, instance):
+        for item_sold in instance.itemsold_set.all():
+            item_sold.delete()
+
+        instance.delete()
 
 
 @login_required
