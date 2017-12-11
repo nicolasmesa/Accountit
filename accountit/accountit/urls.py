@@ -34,6 +34,7 @@ urlpatterns = [
     url(r'^api/v1/contacts/', include('contacts.urls', namespace='contacts')),
     url(r'^api/v1/items/', include('items.urls', namespace='items')),
     url(r'^api/v1/invoices/', include('invoices.urls', namespace='invoices')),
+    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
 ]
 
 if settings.DEBUG:
